@@ -20,16 +20,16 @@
     - Stack
 - Collections.Generic
   - Collection mit Elementen vom Typ T
-    - Dictionary\&lt;TKey, TValue\&gt;
-    - List\&lt;T\&gt;
-    - Queue\&lt;T\&gt;
-    - SortedList\&lt;TKey, TValue\&gt;
-    - Stack\&lt;T\&gt;
+    - Dictionary<TKey, TValue>;
+    - List<T>;
+    - Queue<T>;
+    - SortedList<TKey, TValue>;
+    - Stack<T>;
 - Collection.Concurrent
   - Collection die von mehreren Threads gleichzeitig benutzt werden
-    - ConcurrentQueue\&lt;T\&gt;
-    - ConcurrentStack\&lt;T\&gt;
-    - ConcurrentDictionary\&lt;TKey, TValue\&gt;
+    - ConcurrentQueue<T>;
+    - ConcurrentStack<T>;
+    - ConcurrentDictionary<TKey, TValue>;
 
 ## Einsatzgebiete
 
@@ -73,7 +73,7 @@
 | -------------------- | ----------------------- | --------------------- |
 | **Dictionary**       | O(1)                    | O(1)                  |
 | **SortedDictionary** | O(log n)                | O(log n)              |
-| SortedList           | O(log n)                | O(n)                  |
+| **SortedList**       | O(log n)                | O(n)                  |
 | **List**             | Index: O(1); Value O(n) | O(n)                  |
 | **LinkedList**       | O(n)                    | O(1)                  |
 | **HashSet**          | O(1)                    | O(1)                  |
