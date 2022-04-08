@@ -21,14 +21,14 @@
 - Collections.Generic
   - Collection mit Elementen vom Typ T
     - Dictionary<TKey, TValue>;
-    - List<T>;
-    - Queue<T>;
+    - List\<T>;
+    - Queue\<T>;
     - SortedList<TKey, TValue>;
-    - Stack<T>;
+    - Stack\<T>;
 - Collection.Concurrent
   - Collection die von mehreren Threads gleichzeitig benutzt werden
-    - ConcurrentQueue<T>;
-    - ConcurrentStack<T>;
+    - ConcurrentQueue\<T>;
+    - ConcurrentStack\<T>;
     - ConcurrentDictionary<TKey, TValue>;
 
 ## Einsatzgebiete
@@ -73,7 +73,7 @@
 | -------------------- | ----------------------- | --------------------- |
 | **Dictionary**       | O(1)                    | O(1)                  |
 | **SortedDictionary** | O(log n)                | O(log n)              |
-| **SortedList**       | O(log n)                | O(n)                  |
+| SortedList           | O(log n)                | O(n)                  |
 | **List**             | Index: O(1); Value O(n) | O(n)                  |
 | **LinkedList**       | O(n)                    | O(1)                  |
 | **HashSet**          | O(1)                    | O(1)                  |
