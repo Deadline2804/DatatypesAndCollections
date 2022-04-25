@@ -1,0 +1,166 @@
+
+classDiagram
+    class CompaniesService
+    CompaniesService ..> Company: create
+    CompaniesService ..> CompaniesServiceResponse: create
+    CompaniesService: -string _baseURL
+    CompaniesService: -string _apiEndpoint
+    CompaniesService: -HttpClient client
+    CompaniesService: -IAuthenticationService _authenticationService
+
+    class CredentialsService
+    CredentialsService ..> CredentialsServiceResponse: create
+    CredentialsService: -string _baseURL
+    CredentialsService: -string _apiEndpoint
+    CredentialsService: -HttpClient client
+    CredentialsService: -IAuthenticationService _authenticationService
+
+    class JobPlanningLineService
+    JobPlanningLineService ..> JobPlanningLinesModelResponse: create
+    JobPlanningLineService ..> JobPlanningLinesModel: create
+    JobPlanningLineService: -string _baseURL
+    JobPlanningLineService: -string _apiEndpointGet
+    JobPlanningLineService: -string _apiEndpointGetWithParameter
+    JobPlanningLineService: -HttpClient client
+    JobPlanningLineService: -IAuthenticationService _authenticationService
+
+    class JobService
+    JobService ..> JobModelResponse: create
+    JobService ..> JobModel: create
+    JobService ..> FavJobsModelResponse: create
+    JobService ..> FavJobModel: create
+    JobService: -string _baseURL
+    JobService: -string _apiEndpointGet
+    JobService: -string _apiEndpointGetFav
+    JobService: -string _apiEndpointSetFav
+    JobService: -HttpClient client
+    JobService: -IAuthenticationService _authenticationService
+
+    class JobTasksService
+    JobTasksService ..> JobTasksModelResponse: create
+    JobTasksService ..> JobTasksModel: create
+    JobTasksService: -string _baseURL
+    JobTasksService: -string _apiEndpointGet
+    JobTasksService: -HttpClient client
+    JobTasksService: -IAuthenticationService _authenticationService
+
+    class TimeRecordingsService
+    TimeRecordingsService ..> TimeRecordingResponse: create
+    TimeRecordingsService ..> TimeRecording: create
+    TimeRecordingsService: -string _baseURL
+    TimeRecordingsService: -string _apiEndpointGet
+    TimeRecordingsService: -string _apiEndpointSet
+    TimeRecordingsService: -string _apiEndpointGetToday
+    TimeRecordingsService: -string _apiEndpointUnstopped
+    TimeRecordingsService: -string _apiEndpointUnstoppedPause
+    TimeRecordingsService: -HttpClient client
+    TimeRecordingsService: -IAuthenticationService _authenticationService
+    TimeRecordingsService: -ILocalTimeService _localTimeService
+    TimeRecordingsService: -GetDates(String companyID, string username) Task~String~
+
+    class TypeOfAbsentDaysService
+    TypeOfAbsentDaysService ..> TypeOfAbsentDaysResponse: create
+    TypeOfAbsentDaysService ..> TypeOfAbsentDays: create
+    TypeOfAbsentDaysService: -string _baseURL
+    TypeOfAbsentDaysService: -string _apiEndpointGet
+    TypeOfAbsentDaysService: -HttpClient client
+    TypeOfAbsentDaysService: -IAuthenticationService _authenticationService
+
+    class JobPlanningLinesController
+    JobPlanningLinesController ..> JobPlanningLinesModelResponse: create
+    JobPlanningLinesController: -IJobPlanningLineService _jobPlanningLineService
+    JobPlanningLinesController: -AppSession _appSession
+    JobPlanningLinesController: +Index(Taskparameter param) Task<JobPlanningLinesModelResponse>
+
+    class JobTasksController
+    JobTasksController ..> JobTasksModelResponse: create
+    JobTasksController: -IJobTasksService _jobTasksService
+    JobTasksController: -AppSession _appSession
+    JobTasksController: +Index(Taskparameter param) Task<JobTasksModelResponse>
+
+    class TimeRecordingsController
+    TimeRecordingsController ..> TimeRecordingResponse: create
+    TimeRecordingsController: -ITimeRecordingsService _timeRecordingsService
+    TimeRecordingsController: -AppSession _appSession
+    TimeRecordingsController: +Index(Taskparameter param) Task<TimeRecordingResponse>
+
+    class Company
+    Company: +Guid Id
+    Company: +string Name
+
+    class CompaniesServiceResponse
+    CompaniesServiceResponse: +IEnumerable~Company~ Value
+    CompaniesServiceResponse ..> Company: create
+
+    class CredentialsServiceResponse
+    CredentialsServiceResponse: +string No
+    CredentialsServiceResponse: +string Password
+    CredentialsServiceResponse: +string Name
+
+    class FavJobModel
+    FavJobModel: +string ressourceNo
+    FavJobModel: +string jobNo
+
+    class FavJobsModelResponse
+    FavJobsModelResponse: +IEnumerable~FavJobModel~ Value
+    FavJobsModelResponse ..> FavJobModel: create
+
+    class JobModel
+    JobModel: +string No
+    JobModel: +string Description
+    JobModel: +string Status
+    JobModel: +bool AbsentDaysJob
+    JobModel: +bool GeneralWorkJob
+    JobModel: +bool GeneralFavourite
+
+    class JobModelResponse
+    JobModelResponse: +IEnumerable~JobModel~ Value
+    JobModelResponse ..> JobModel: create
+
+    class JobPlanningLinesModel
+    JobPlanningLinesModel: +int LineNo
+    JobPlanningLinesModel: +string Description
+    JobPlanningLinesModel: +string JobTaskNo
+    JobPlanningLinesModel: +string jobNo
+
+    class JobPlanningLinesModelResponse
+    JobPlanningLinesModelResponse: +IEnumerable~JobPlanningLinesModel~ Value
+    JobPlanningLinesModelResponse ..> JobPlanningLinesModel: create
+
+    class JobTasksModel
+    JobTasksModel: +string JobTaskNo
+    JobTasksModel: +string Description
+    JobTasksModel: +string jobNo
+
+    class JobTasksModelResponse
+    JobTasksModelResponse: +IEnumerable~JobTasksModel~ Value
+    JobTasksModelResponse ..> JobTasksModel: create
+
+    class TimeRecording
+    TimeRecording: +int id
+    TimeRecording: +string JobNo
+    TimeRecording: +string JobTaskNo
+    TimeRecording: +string JobPlanningLineNo
+    TimeRecording: +string RessourceNo
+    TimeRecording: +DateTime? StartDateUTC
+    TimeRecording: +TimeSpan? StartTimeUTC
+    TimeRecording: +DateTime? EndDateUTC
+    TimeRecording: +TimeSpan? EndTimeUTC
+    TimeRecording: +double WorkHours
+    TimeRecording: +string Type
+    TimeRecording: +bool pause
+    TimeRecording: +string note
+    TimeRecording: +double timezone
+    TimeRecording: +bool recordedManually
+
+    class TimeRecordingResponse
+    TimeRecordingResponse: +IEnumerable~TimeRecording~ TimeRecordings
+    TimeRecordingResponse ..> TimeRecording: create
+
+    class TypeOfAbsentDays
+    TypeOfAbsentDays: +string TypeCode
+    TypeOfAbsentDays: +string Description
+
+    class TypeOfAbsentDaysResponse
+    TypeOfAbsentDaysResponse ..> TypeOfAbsentDays: create
+    TypeOfAbsentDaysResponse: +IEnumerable~TypeOfAbsentDays~ Value

@@ -1,0 +1,154 @@
+ classDiagram
+    class ICompaniesService
+    <<interface>> ICompaniesService
+    ICompaniesService: GetCompanies() Task~CompaniesServiceResponse~
+    ICompaniesService: GetCompanyName(string companyId) Task~string~
+
+    class ICredentialsService
+    <<interface>> ICredentialsService
+    ICredentialsService: GetCredentials(String Username, string companyID) Task~CredentialsServiceResponse~
+
+    class IJobPlanningLineService
+    <<interface>> IJobPlanningLineService
+    IJobPlanningLineService: GetPlanningLines(string companyID, string jobNo, string jobTaskNo) Task~JobPlanningLinesModelResponse~
+
+    class IJobService
+    <<interface>> IJobService
+    IJobService: GetJobs(string companyID, string username) Task~JobModelResponse~
+    IJobService: GetFavJobsAsync(string companyID, string username) Task~FavJobsModelResponse~
+    IJobService: PostFavJobAsync(FavJobModel request, string companyID)
+    IJobService: DeleteFavJobsAsync(string id, string username, string companyID)
+
+    class IJobTasksService
+    <<interface>> IJobTasksService
+    IJobTasksService: GetTasks(string companyID, string jobNo) Task~JobTasksModelResponse~
+
+    class ILocalTimeService
+    <<interface>> ILocalTimeService
+    ILocalTimeService: GetLocalDateTime() DateTime
+    ILocalTimeService: CalculateUTCDateTime(DateTime LocalDate) DateTime
+
+    class ITypeOfAbsentDaysService
+    <<interface>> ITypeOfAbsentDaysService
+    ITypeOfAbsentDaysService: GetTypeOfAbsentDays(string companyID) Task~TypeOfAbsentDaysResponse~
+
+    class AbsentDaysModel
+    AbsentDaysModel ..> IJobService
+    AbsentDaysModel ..> ITypeOfAbsentDaysService
+    AbsentDaysModel: +IJobService _jobService
+    AbsentDaysModel: +IEnumerable~JobModel~ JobModels
+    AbsentDaysModel: +ITimeRecordingsService _timeRecordingsService
+    AbsentDaysModel: +IEnumerable~TypeOfAbsentDays~ TypeOfAbsentDays
+    AbsentDaysModel: +AppSession _ appSession
+    AbsentDaysModel: +OnGet() IActionResult
+    AbsentDaysModel: +OnPostLogOut() Task~IActionResult~
+    AbsentDaysModel: +OnPostManual(TimeRecording request) Task~IActionResult~
+    AbsentDaysModel: +GetResponseName() String
+    AbsentDaysModel: +GetCompanyName() String
+    AbsentDaysModel: -GetUsername()
+    AbsentDaysModel: -GetCompanyID()
+    AbsentDaysModel: +FormatWorkHours(TimeRecording item) String
+
+    class AutomaticTimeRecordingModel
+    AutomaticTimeRecordingModel ..> ILocalTimeService
+    AutomaticTimeRecordingModel: +string _username
+    AutomaticTimeRecordingModel: +string _name
+    AutomaticTimeRecordingModel: +string _companyID
+    AutomaticTimeRecordingModel: +ITimeRecordingsService _timeRecordingsService
+    AutomaticTimeRecordingModel: +ILocalTimeService _localTimeService
+    AutomaticTimeRecordingModel: +AppSession _ appSession
+    AutomaticTimeRecordingModel: +IConfiguration _config
+    AutomaticTimeRecordingModel: +OnGet() Task~IActionResult~
+    AutomaticTimeRecordingModel: +OnPostLogOut() Task~IActionResult~
+    AutomaticTimeRecordingModel: +OnPostStartTime(TimeRecording request) Task~IActionResult~
+    AutomaticTimeRecordingModel: +OnPostEnd() Task~IActionResult~
+    AutomaticTimeRecordingModel: -OnPostEndTime() Task
+    AutomaticTimeRecordingModel: +OnPostPauseStart(TimeRecording request) Task~IActionResult~
+    AutomaticTimeRecordingModel: +OnPostContinue(TimeRecording request) Task~IActionResult~
+    AutomaticTimeRecordingModel: -OnPostPauseEnd(TimeRecording request) Task
+    AutomaticTimeRecordingModel: +GetResponseName() String
+    AutomaticTimeRecordingModel: +GetCompanyName() String
+    AutomaticTimeRecordingModel: +GetUnstopped() Task~TimeRecording~
+    AutomaticTimeRecordingModel: +GetUnstoppedPause() Task~TimeRecording~
+    AutomaticTimeRecordingModel: +GetTodayTimeRecording() Task~TimeRecordingResponse~#
+    AutomaticTimeRecordingModel: -GetCompanyID()
+    AutomaticTimeRecordingModel: -GetUsername()
+    AutomaticTimeRecordingModel: +GetInfos()
+
+    class ChooseCompanyModel
+    ChooseCompanyModel ..> ICompaniesService
+    ChooseCompanyModel: +AppSession _appSession
+    ChooseCompanyModel: +ICompaniesService _companiesService
+    ChooseCompanyModel: +IEnumerable~Company~ Companies
+    ChooseCompanyModel: +bool ShowErrorMessage
+    ChooseCompanyModel: +OnGet() Task~IActionResult~
+    ChooseCompanyModel: +OnPost(Guid companyID) Task~IActionResult~
+
+    class ChooseProjectModel
+    ChooseProjectModel ..> IJobService
+    ChooseProjectModel ..> IJobTasksService
+    ChooseProjectModel ..> IJobPlanningLineService
+    ChooseProjectModel: +string _username
+    ChooseProjectModel: +IJobService _jobService
+    ChooseProjectModel: +IJobTasksService _jobTasksService
+    ChooseProjectModel: +IJobPlanningLineService _jobPlanningLineService
+    ChooseProjectModel: +IEnumerable~JobModel~ JobModels
+    ChooseProjectModel: +IEnumerable~JobTasksModel~ JobTasksModels
+    ChooseProjectModel: +IEnumerable~JobPlanningLinesModel~ JobPlanningLinesModels
+    ChooseProjectModel: +string jobNo
+    ChooseProjectModel: +string jobTaskNo
+    ChooseProjectModel: +DateTime dateTime
+    ChooseProjectModel: +ITimeRecordingsService _timeRecordingsService
+    ChooseProjectModel: +IEnumerable~TimeRecording~ timeRecordings
+    ChooseProjectModel: +IConfiguration _config
+    ChooseProjectModel: +string _companyID
+    ChooseProjectModel: +AppSession _appSession
+    ChooseProjectModel: +OnGet(DateTime date) Task~IActionResult~
+    ChooseProjectModel: +OnPost(List~TimeRecording~ request) Task~RedirectToPageResult~
+    ChooseProjectModel: +OnPostLogOut() Task~IActionResult~
+    ChooseProjectModel: -GetCompanyID()
+    ChooseProjectModel: -GetUsername()
+    ChooseProjectModel: +GetResponseName() String
+    ChooseProjectModel: +GetCompanyName() String
+
+    class ChooseProjectRowModel
+    ChooseProjectRowModel ..> IJobService
+    ChooseProjectRowModel: +string companyID
+    ChooseProjectRowModel: +string username
+    ChooseProjectRowModel: +TimeRecording Item
+    ChooseProjectRowModel: +IJobService JobService
+    ChooseProjectRowModel: +IEnumerable~JobModel~ JobModels
+    ChooseProjectRowModel: +AppSession _appSession
+    ChooseProjectRowModel: +string ParentID
+    ChooseProjectRowModel: +OnGetAsync(string start, string end, string parentID) Task
+    
+    class LoginModel
+    LoginModel ..> ICredentialsService
+    LoginModel: -ICredentialsService _credentialsService
+    LoginModel: -string txt_loginError
+    LoginModel: -AppSession _appSession
+    LoginModel: +OnGetAsync(CredentialsServiceResponse request) Task~IActionResult~
+
+    class SetupModel
+    SetupModel ..>IJobService
+    SetupModel ..>FavJobRequest
+    SetupModel: +string _username
+    SetupModel: +string _name
+    SetupModel: +string _companyID
+    SetupModel: +FavJobsModelResponse favJobs
+    SetupModel: +AppSession _appSession
+    SetupModel: +ITimeRecordingsService _timeRecordingsService
+    SetupModel: +IJobService _jobService
+    SetupModel: +IConfiguration _config
+    SetupModel: +OnGetAsync() Task~IActionResult~
+    SetupModel: +OnPost(List~FavJobRequest~ request) Task~IActionResult~
+    SetupModel: +GetResponseName() String
+    SetupModel: +GetCompanyName() String
+    SetupModel: -GetUsername()
+    SetupModel: -GetCompanyID()
+    SetupModel: +GetInfos()
+
+    class FavJobRequest
+    FavJobRequest: +string jobNo
+    FavJobRequest: +bool fav
+    FavJobRequest: +bool origFav

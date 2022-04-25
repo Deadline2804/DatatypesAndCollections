@@ -1,0 +1,77 @@
+
+classDiagram
+    class IAuthenticationService
+    <<interface>> IAuthenticationService
+    IAuthenticationService: Get() Task~AuthenticationHeaderValue~
+
+    class AuthenticationBaseService
+    AuthenticationBaseService ..> IAuthenticationService
+    AuthenticationBaseService: -IConfiguration _config
+
+    class BasicAuthService
+    BasicAuthService --|> AuthenticationBaseService
+    BasicAuthService: +Get() Task~AuthenticationHeaderValue~
+
+    class OAuthService
+    OAuthService --|> AuthenticationBaseService
+    OAuthService: -AuthenticationResult AuthResult
+    OAuthService: +Get() Task~AuthenticationHeaderValue~
+    OAuthService: -GetNewAccessToken() Task~AuthenticationResult~
+
+    class CompaniesService
+    CompaniesService ..> IAuthenticationService
+    CompaniesService: -string _baseURL
+    CompaniesService: -string _apiEndpoint
+    CompaniesService: -HttpClient client
+    CompaniesService: -IAuthenticationService _authenticationService
+
+    class CredentialsService
+    CredentialsService ..> IAuthenticationService
+    CredentialsService: -string _baseURL
+    CredentialsService: -string _apiEndpoint
+    CredentialsService: -HttpClient client
+    CredentialsService: -IAuthenticationService _authenticationService
+
+    class JobPlanningLineService
+    JobPlanningLineService ..> IAuthenticationService
+    JobPlanningLineService: -string _baseURL
+    JobPlanningLineService: -string _apiEndpointGet
+    JobPlanningLineService: -string _apiEndpointGetWithParameter
+    JobPlanningLineService: -HttpClient client
+    JobPlanningLineService: -IAuthenticationService _authenticationService
+
+    class JobService
+    JobService ..> IAuthenticationService
+    JobService: -string _baseURL
+    JobService: -string _apiEndpointGet
+    JobService: -string _apiEndpointGetFav
+    JobService: -string _apiEndpointSetFav
+    JobService: -HttpClient client
+    JobService: -IAuthenticationService _authenticationService
+
+    class JobTasksService
+    JobTasksService ..> IAuthenticationService
+    JobTasksService: -string _baseURL
+    JobTasksService: -string _apiEndpointGet
+    JobTasksService: -HttpClient client
+    JobTasksService: -IAuthenticationService _authenticationService
+
+    class TimeRecordingsService
+    TimeRecordingsService ..> IAuthenticationService
+    TimeRecordingsService: -string _baseURL
+    TimeRecordingsService: -string _apiEndpointGet
+    TimeRecordingsService: -string _apiEndpointSet
+    TimeRecordingsService: -string _apiEndpointGetToday
+    TimeRecordingsService: -string _apiEndpointUnstopped
+    TimeRecordingsService: -string _apiEndpointUnstoppedPause
+    TimeRecordingsService: -HttpClient client
+    TimeRecordingsService: -IAuthenticationService _authenticationService
+    TimeRecordingsService: -ILocalTimeService _localTimeService
+    TimeRecordingsService: -GetDates(String companyID, string username) Task~String~
+
+    class TypeOfAbsentDaysService
+    TypeOfAbsentDaysService ..> IAuthenticationService
+    TypeOfAbsentDaysService: -string _baseURL
+    TypeOfAbsentDaysService: -string _apiEndpointGet
+    TypeOfAbsentDaysService: -HttpClient client
+    TypeOfAbsentDaysService: -IAuthenticationService _authenticationService
